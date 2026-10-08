@@ -1,0 +1,28 @@
+[
+  {
+    "id": 1,
+    "name": "Yamaha MT-07",
+    "brand": "Yamaha",
+    "price": 9099,
+    "category": "Naked",
+    "engine": "689 cc",
+    "power": "73.4 PS",
+    "torque": "68 Nm",
+    "weight": "183 kg",
+    "seatHeight": "805 mm",
+    "image": "mt07.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Kawasaki Ninja 650",
+    "brand": "Kawasaki",
+    "price": 8399,
+    "category": "Sport",
+    "engine": "649 cc",
+    "power": "68 PS",
+    "torque": "64 Nm",
+    "weight": "193 kg",
+    "seatHeight": "790 mm",
+    "image": "ninja650.jpg"
+  }
+]
