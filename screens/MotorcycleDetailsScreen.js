@@ -1,117 +1,173 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
+
 import motorcycleImages from "../assets/motorcycleImages";
 
-const MotorcycleDetailsScreen = ({ route }) => {
+export default function MotorcycleDetailsScreen({ route }) {
   const { motorcycle } = route.params;
 
+  const specifications = [
+    { label: "ENGINE", value: motorcycle.engine },
+    { label: "POWER", value: motorcycle.power },
+    { label: "TORQUE", value: motorcycle.torque },
+    { label: "WEIGHT", value: motorcycle.weight },
+    { label: "SEAT HEIGHT", value: motorcycle.seatHeight },
+  ];
+
   return (
-    <ScrollView style={styles.container}>
-      <Image
-        source={motorcycleImages[motorcycle.image]}
-        style={styles.image}
-      />
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.content}
+      showsVerticalScrollIndicator={false}
+    >
+      {/* Motorcycle image */}
+      <View style={styles.imageContainer}>
+        <Image
+          source={motorcycleImages[motorcycle.image]}
+          style={styles.motorcycleImage}
+          resizeMode="contain"
+        />
+      </View>
 
-      <Text style={styles.category}>{motorcycle.category}</Text>
+      {/* Motorcycle information */}
+      <View style={styles.details}>
+        <Text style={styles.category}>
+          {motorcycle.category.toUpperCase()}
+        </Text>
 
-      <Text style={styles.name}>{motorcycle.name}</Text>
+        <Text style={styles.name}>{motorcycle.name}</Text>
 
-      <Text style={styles.price}>
-        €{motorcycle.price.toLocaleString("en-IE")}
-      </Text>
+        <Text style={styles.priceLabel}>PRICE</Text>
+        <Text style={styles.price}>
+          €{motorcycle.price.toLocaleString("en-IE")}
+        </Text>
 
-      <View style={styles.specifications}>
-        <Text style={styles.sectionTitle}>Specifications</Text>
+        {/* Specifications */}
+        <View style={styles.specificationsSection}>
+          <Text style={styles.sectionTitle}>SPECIFICATIONS</Text>
 
-        <View style={styles.specRow}>
-          <Text style={styles.specLabel}>Engine</Text>
-          <Text style={styles.specValue}>{motorcycle.engine}</Text>
-        </View>
+          {specifications.map((specification, index) => (
+            <View
+              key={specification.label}
+              style={[
+                styles.specificationRow,
+                index === specifications.length - 1 &&
+                  styles.lastSpecificationRow,
+              ]}
+            >
+              <Text style={styles.specificationLabel}>
+                {specification.label}
+              </Text>
 
-        <View style={styles.specRow}>
-          <Text style={styles.specLabel}>Power</Text>
-          <Text style={styles.specValue}>{motorcycle.power} </Text>
-        </View>
-
-        <View style={styles.specRow}>
-          <Text style={styles.specLabel}>Torque</Text>
-          <Text style={styles.specValue}>{motorcycle.torque}</Text>
-        </View>
-
-        <View style={styles.specRow}>
-          <Text style={styles.specLabel}>Weight</Text>
-          <Text style={styles.specValue}>{motorcycle.weight} </Text>
-        </View>
-
-        <View style={styles.specRow}>
-          <Text style={styles.specLabel}>Seat Height</Text>
-          <Text style={styles.specValue}>{motorcycle.seatHeight} </Text>
+              <Text style={styles.specificationValue}>
+                {specification.value}
+              </Text>
+            </View>
+          ))}
         </View>
       </View>
     </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#101010",
   },
-  image: {
+  content: {
+    paddingBottom: 35,
+    alignItems: "center",
+  },
+
+  // Image
+  imageContainer: {
     width: "100%",
-    height: 280,
-    resizeMode: "contain",
+    maxWidth: 850,
+    height: 300,
+    backgroundColor: "#ffffff",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  motorcycleImage: {
+    width: "100%",
+    height: "100%",
+  },
+
+  // Main information
+  details: {
+    width: "100%",
+    maxWidth: 850,
+    paddingHorizontal: 24,
+    paddingTop: 25,
   },
   category: {
-    fontSize: 13,
-    color: "#666666",
-    textTransform: "uppercase",
-    fontWeight: "600",
-    marginHorizontal: 20,
-    marginTop: 10,
+    color: "#e63946",
+    fontSize: 11,
+    fontWeight: "bold",
+    letterSpacing: 2,
+    marginBottom: 8,
   },
   name: {
-    fontSize: 28,
+    color: "#ffffff",
+    fontSize: 30,
     fontWeight: "bold",
-    color: "#222222",
-    marginHorizontal: 20,
-    marginTop: 5,
+    marginBottom: 20,
+  },
+  priceLabel: {
+    color: "#888888",
+    fontSize: 10,
+    fontWeight: "bold",
+    letterSpacing: 2,
+    marginBottom: 5,
   },
   price: {
-    fontSize: 24,
+    color: "#e63946",
+    fontSize: 27,
     fontWeight: "bold",
-    color: "#222222",
-    marginHorizontal: 20,
-    marginTop: 10,
   },
-  specifications: {
-    margin: 20,
-    padding: 15,
-    backgroundColor: "#f5f5f5",
-    borderRadius: 12,
+
+  // Specifications
+  specificationsSection: {
+    marginTop: 32,
+    backgroundColor: "#1b1b1b",
+    paddingHorizontal: 18,
+    paddingTop: 20,
+    paddingBottom: 5,
   },
   sectionTitle: {
-    fontSize: 20,
+    color: "#ffffff",
+    fontSize: 13,
     fontWeight: "bold",
-    color: "#222222",
+    letterSpacing: 2,
     marginBottom: 10,
   },
-  specRow: {
+  specificationRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingVertical: 12,
+    alignItems: "center",
+    paddingVertical: 17,
     borderBottomWidth: 1,
-    borderBottomColor: "#dddddd",
+    borderBottomColor: "#333333",
   },
-  specLabel: {
-    fontSize: 15,
-    color: "#666666",
+  lastSpecificationRow: {
+    borderBottomWidth: 0,
   },
-  specValue: {
-    fontSize: 15,
-    fontWeight: "600",
-    color: "#222222",
+  specificationLabel: {
+    color: "#999999",
+    fontSize: 11,
+    fontWeight: "bold",
+    letterSpacing: 1,
+  },
+  specificationValue: {
+    color: "#ffffff",
+    fontSize: 13,
+    fontWeight: "bold",
   },
 });
-
-export default MotorcycleDetailsScreen;

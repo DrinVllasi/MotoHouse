@@ -1,5 +1,5 @@
-import React from "react";
-import {
+
+import React, { useState } from "react";import {
   View,
   Text,
   Image,
@@ -7,126 +7,148 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+import Swiper from "react-native-swiper";
 
 import data from "../assets/data.json";
 import motorcycleImages from "../assets/motorcycleImages";
 
-const HomeScreen = ({ navigation }) => {
-  const featuredMotorcycle = data.find(
-    (motorcycle) => motorcycle.id === 2
-  );
-
+export default function HomeScreen({ navigation }) {
+  const featuredMotorcycles = data.slice(0, 5);
+  const [activeIndex, setActiveIndex] = useState(0);
   return (
     <ScrollView
       style={styles.container}
       contentContainerStyle={styles.content}
+      showsVerticalScrollIndicator={false}
     >
-      {/* Hero section */}
-      <View style={styles.hero}>
-        <Text style={styles.eyebrow}>YOUR NEXT ADVENTURE STARTS HERE</Text>
+      {/* Introduction */}
+      <View style={styles.intro}>
+        <Text style={styles.eyebrow}>FIND YOUR NEXT RIDE</Text>
 
         <Text style={styles.heading}>
-          RIDE BEYOND
-          {"\n"}
+          RIDE BEYOND{"\n"}
           <Text style={styles.headingAccent}>LIMITS.</Text>
         </Text>
 
         <Text style={styles.description}>
-          Discover motorcycles built for every road,
-          every journey, and every kind of rider.
-        </Text>
-
-        <TouchableOpacity
-          style={styles.primaryButton}
-          onPress={() => navigation.navigate("Motorcycles")}
-        >
-          <Text style={styles.primaryButtonText}>
-            EXPLORE MOTORCYCLES  →
-          </Text>
-        </TouchableOpacity>
-
-        <View style={styles.heroImageContainer}>
-          <Image
-            source={motorcycleImages["mt07.jpg"]}
-            style={styles.heroImage}
-          />
-        </View>
-
-        <Text style={styles.imageCaption}>
-          PERFORMANCE. PRECISION. FREEDOM.
+          Discover motorcycles built for every kind of rider.
+          Find the machine that matches your style.
         </Text>
       </View>
 
-      {/* Featured motorcycle */}
-      {featuredMotorcycle && (
-        <View style={styles.featuredSection}>
-          <View style={styles.sectionHeader}>
-            <View>
-              <Text style={styles.sectionEyebrow}>HANDPICKED FOR YOU</Text>
-              <Text style={styles.sectionTitle}>Featured Bike</Text>
-            </View>
-
-            <Text style={styles.featuredNumber}>01 / 06</Text>
-          </View>
-
-          <View style={styles.featuredCard}>
-            <View style={styles.featuredImageContainer}>
-              <Image
-                source={motorcycleImages[featuredMotorcycle.image]}
-                style={styles.featuredImage}
-              />
-            </View>
-
-            <Text style={styles.category}>
-              {featuredMotorcycle.category.toUpperCase()}
-            </Text>
-
-            <Text style={styles.motorcycleName}>
-              {featuredMotorcycle.name}
-            </Text>
-
-            <View style={styles.priceRow}>
-              <Text style={styles.priceLabel}>Starting at</Text>
-              <Text style={styles.price}>
-                €{featuredMotorcycle.price.toLocaleString("en-IE")}
-              </Text>
-            </View>
-
-            <TouchableOpacity
-              style={styles.secondaryButton}
-              onPress={() =>
-                navigation.navigate("MotorcycleDetails", {
-                  motorcycle: featuredMotorcycle,
-                })
-              }
-            >
-              <Text style={styles.secondaryButtonText}>
-                VIEW MOTORCYCLE  →
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          <TouchableOpacity
-            style={styles.viewAllButton}
-            onPress={() => navigation.navigate("Motorcycles")}
-          >
-            <Text style={styles.viewAllText}>
-              VIEW ALL MOTORCYCLES  →
-            </Text>
-          </TouchableOpacity>
+      {/* Motorcycle carousel */}
+      <View style={styles.carouselSection}>
+        <View style={styles.carouselHeader}>
+          <Text style={styles.sectionLabel}>THE COLLECTION</Text>
+          <Text style={styles.swipeHint}>SWIPE TO EXPLORE ↔</Text>
         </View>
-      )}
 
+        {featuredMotorcycles.length > 0 && (
+          <View style={styles.carousel}>
+            <Swiper
+              loop={false}
+              showsPagination={false}
+              autoplay={false}
+              onMomentumScrollEnd={(event, state) => {
+                console.log("Active slide:", state.index);
+                setActiveIndex(state.index);
+              }}
+              removeClippedSubviews={false}
+            >
 
+              {featuredMotorcycles.map((motorcycle, index) => (
+                <View key={motorcycle.id} style={styles.slide}>
+                  <View style={styles.imageContainer}>
+                    <Image
+                      source={motorcycleImages[motorcycle.image]}
+                      style={styles.motorcycleImage}
+                      resizeMode="contain"
+                    />
+
+                    <View style={styles.imageCounter}>
+                      <Text style={styles.imageCounterText}>
+                        {String(index + 1).padStart(2, "0")} /{" "}
+                        {String(featuredMotorcycles.length).padStart(2, "0")}
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View style={styles.motorcycleInfo}>
+                    <Text style={styles.category}>
+                      {motorcycle.category.toUpperCase()}
+                    </Text>
+
+                    <Text style={styles.motorcycleName}>
+                      {motorcycle.name}
+                    </Text>
+
+                    <View style={styles.priceRow}>
+                      <View>
+                        <Text style={styles.priceLabel}>STARTING AT</Text>
+                        <Text style={styles.price}>
+                          €{motorcycle.price.toLocaleString("en-IE")}
+                        </Text>
+                      </View>
+
+                      <TouchableOpacity
+                        style={styles.viewButton}
+                        onPress={() =>
+                          navigation.navigate("MotorcycleDetails", {
+                            motorcycle,
+                          })
+                        }
+                        activeOpacity={0.8}
+                      >
+                        <Text style={styles.viewButtonText}>VIEW BIKE</Text>
+                        <Text style={styles.viewButtonArrow}> →</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              ))}
+            </Swiper>
+          </View>
+        )}
+
+        <TouchableOpacity
+          style={styles.allMotorcyclesButton}
+          onPress={() => navigation.navigate("Motorcycles")}
+          activeOpacity={0.8}
+        >
+          <Text style={styles.allMotorcyclesText}>
+            BROWSE ALL MOTORCYCLES
+          </Text>
+          <Text style={styles.allMotorcyclesArrow}>→</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Footer */}
       <View style={styles.footer}>
-        <Text style={styles.footerBrand}>MotoHouse</Text>
-        <Text style={styles.footerText}>
-          FIND YOUR RIDE. OWN THE ROAD.
+        <View style={styles.footerLine} />
+
+        <Text style={styles.footerBrand}>
+          MOTO<Text style={styles.headingAccent}>HOUSE</Text>
+        </Text>
+
+        <Text style={styles.footerSlogan}>
+          BUILT FOR THE LOVE OF RIDING.
+        </Text>
+
+        <TouchableOpacity
+          style={styles.aboutButton}
+          onPress={() => navigation.navigate("About")}
+          activeOpacity={0.8}
+        >
+          <Text style={styles.aboutButtonText}>ABOUT MOTOHOUSE →</Text>
+        </TouchableOpacity>
+
+        <Text style={styles.copyright}>
+          © MotoHouse. Find your next ride.
         </Text>
       </View>
     </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -134,188 +156,221 @@ const styles = StyleSheet.create({
     backgroundColor: "#101010",
   },
   content: {
-    paddingBottom: 20,
+    paddingBottom: 24,
+    alignItems: "center",
   },
-  hero: {
-    backgroundColor: "#101010",
+
+  // Introduction
+  intro: {
+    width: "100%",
+    maxWidth: 900,
     paddingHorizontal: 24,
-    paddingTop: 35,
-    paddingBottom: 25,
+    paddingTop: 30,
+    paddingBottom: 24,
   },
   eyebrow: {
     color: "#e63946",
     fontSize: 11,
     fontWeight: "bold",
-    letterSpacing: 2,
+    letterSpacing: 3,
+    marginBottom: 12,
   },
   heading: {
     color: "#ffffff",
-    fontSize: 42,
+    fontSize: 38,
     fontWeight: "900",
-    marginTop: 18,
-    lineHeight: 48,
     letterSpacing: 1,
+    lineHeight: 43,
   },
   headingAccent: {
     color: "#e63946",
   },
   description: {
     color: "#aaaaaa",
-    fontSize: 15,
-    lineHeight: 23,
-    marginTop: 15,
-    maxWidth: 360,
+    fontSize: 14,
+    lineHeight: 22,
+    marginTop: 12,
+    maxWidth: 420,
   },
-  primaryButton: {
-    backgroundColor: "#e63946",
-    paddingVertical: 16,
-    paddingHorizontal: 18,
-    borderRadius: 6,
-    alignSelf: "flex-start",
-    marginTop: 24,
-  },
-  primaryButtonText: {
-    color: "#ffffff",
-    fontSize: 13,
-    fontWeight: "bold",
-    letterSpacing: 0.5,
-  },
-  heroImageContainer: {
-  marginTop: 25,
-  backgroundColor: "#ffffff",
-  borderRadius: 12,
-  overflow: "hidden",
-},
-  heroImage: {
+
+  // Carousel
+  carouselSection: {
     width: "100%",
-    height: 230,
-    resizeMode: "contain",
+    maxWidth: 900,
+    paddingHorizontal: 20,
   },
-  imageCaption: {
-    color: "#777777",
-    fontSize: 10,
+  carouselHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  sectionLabel: {
+    color: "#ffffff",
+    fontSize: 12,
     fontWeight: "bold",
     letterSpacing: 2,
-    textAlign: "center",
-    marginTop: 14,
   },
-  featuredSection: {
-    paddingHorizontal: 20,
-    paddingTop: 30,
+  swipeHint: {
+    color: "#888888",
+    fontSize: 10,
+    letterSpacing: 1,
   },
-  sectionHeader: {
-    flexDirection: "row",
-    alignItems: "flex-end",
-    justifyContent: "space-between",
-    marginBottom: 18,
+  carousel: {
+    height: 510,
+    backgroundColor: "#181818",
+    borderRadius: 8,
+    overflow: "hidden",
   },
-  sectionEyebrow: {
-    color: "#e63946",
+  slide: {
+    flex: 1,
+    paddingBottom: 34,
+  },
+  imageContainer: {
+    height: 285,
+    backgroundColor: "#ffffff",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+  },
+  motorcycleImage: {
+    width: "100%",
+    height: "100%",
+  },
+  imageCounter: {
+    position: "absolute",
+    right: 14,
+    top: 14,
+    backgroundColor: "#101010",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+  },
+  imageCounterText: {
+    color: "#ffffff",
     fontSize: 10,
     fontWeight: "bold",
-    letterSpacing: 1.5,
+    letterSpacing: 1,
   },
-  sectionTitle: {
-    color: "#ffffff",
-    fontSize: 26,
-    fontWeight: "bold",
-    marginTop: 6,
-  },
-  featuredNumber: {
-    color: "#777777",
-    fontSize: 12,
-    marginBottom: 5,
-  },
-  featuredCard: {
-    backgroundColor: "#1b1b1b",
-    borderRadius: 12,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: "#303030",
-  },
-  featuredImageContainer: {
-  backgroundColor: "#ffffff",
-  borderRadius: 8,
-  overflow: "hidden",
- },
-  featuredImage: {
-    width: "100%",
-    height: 210,
-    resizeMode: "contain",
+  motorcycleInfo: {
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingTop: 16,
+    justifyContent: "center",
   },
   category: {
     color: "#e63946",
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: "bold",
-    letterSpacing: 1.5,
-    marginTop: 18,
+    letterSpacing: 2,
+    marginBottom: 6,
   },
   motorcycleName: {
     color: "#ffffff",
     fontSize: 24,
     fontWeight: "bold",
-    marginTop: 7,
+    marginBottom: 14,
   },
   priceRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 15,
-    paddingTop: 14,
-    borderTopWidth: 1,
-    borderTopColor: "#383838",
   },
   priceLabel: {
-    color: "#aaaaaa",
-    fontSize: 14,
+    color: "#888888",
+    fontSize: 9,
+    letterSpacing: 1.5,
+    marginBottom: 4,
   },
   price: {
     color: "#ffffff",
     fontSize: 21,
     fontWeight: "bold",
   },
-  secondaryButton: {
-    borderWidth: 1,
-    borderColor: "#e63946",
-    borderRadius: 6,
-    padding: 14,
+  viewButton: {
+    backgroundColor: "#e63946",
+    flexDirection: "row",
     alignItems: "center",
-    marginTop: 18,
+    justifyContent: "center",
+    paddingHorizontal: 14,
+    paddingVertical: 13,
   },
-  secondaryButtonText: {
+  viewButtonText: {
     color: "#ffffff",
-    fontSize: 13,
-    fontWeight: "bold",
-    letterSpacing: 0.5,
-  },
-  viewAllButton: {
-    paddingVertical: 20,
-    alignItems: "center",
-  },
-  viewAllText: {
-    color: "#e63946",
-    fontSize: 13,
+    fontSize: 10,
     fontWeight: "bold",
     letterSpacing: 1,
   },
-  footer: {
-    borderTopWidth: 1,
-    borderTopColor: "#303030",
-    marginTop: 15,
-    paddingVertical: 25,
+  viewButtonArrow: {
+    color: "#ffffff",
+    fontSize: 14,
+    fontWeight: "bold",
+  },
+
+  // Browse all
+  allMotorcyclesButton: {
+    marginTop: 16,
+    borderWidth: 1,
+    borderColor: "#444444",
+    paddingVertical: 16,
+    paddingHorizontal: 18,
+    flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center",
+    width: "100%",
+  },
+  allMotorcyclesText: {
+    color: "#ffffff",
+    fontSize: 11,
+    fontWeight: "bold",
+    letterSpacing: 1.5,
+  },
+  allMotorcyclesArrow: {
+    color: "#e63946",
+    fontSize: 17,
+    marginLeft: 12,
+  },
+
+  // Footer
+  footer: {
+    width: "100%",
+    maxWidth: 900,
+    alignItems: "center",
+    paddingHorizontal: 24,
+    paddingTop: 38,
+    paddingBottom: 12,
+  },
+  footerLine: {
+    width: "100%",
+    height: 1,
+    backgroundColor: "#303030",
+    marginBottom: 24,
   },
   footerBrand: {
     color: "#ffffff",
-    fontSize: 20,
-    fontWeight: "bold",
+    fontSize: 22,
+    fontWeight: "900",
+    letterSpacing: 2,
   },
-  footerText: {
-    color: "#777777",
+  footerSlogan: {
+    color: "#888888",
     fontSize: 10,
     letterSpacing: 2,
     marginTop: 8,
   },
+  aboutButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    marginTop: 14,
+  },
+  aboutButtonText: {
+    color: "#ffffff",
+    fontSize: 10,
+    fontWeight: "bold",
+    letterSpacing: 1,
+  },
+  copyright: {
+    color: "#666666",
+    fontSize: 10,
+    marginTop: 14,
+  },
 });
-
-export default HomeScreen;

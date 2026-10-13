@@ -3,7 +3,7 @@ import { View, FlatList, Text, TouchableOpacity, StyleSheet } from "react-native
 import data from "../assets/data.json";
 import MotorcycleCard from "../components/MotorcycleCard";
 
-const categories = ["All", "Naked", "Sport", "Cruiser", "Superbike"];
+const categories = ["All", "Naked", "Sport", "Cruiser", "Superbike", "Adventure"];
 
 const MotorcyclesScreen = ({ navigation }) => {
   const [selectedCategory, setSelectedCategory] = useState("All");
