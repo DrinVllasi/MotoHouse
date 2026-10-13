@@ -19,10 +19,9 @@ MotoHouse is a motorcycle showroom app built with React Native and Expo. It lets
 ## Commands to Run the App
 
 npm install
-npx expo install react-dom react-native-web @expo/metro-runtime
-npx expo install @react-navigation/native @react-navigation/native-stack @react-navigation/bottom-tabs
-npx expo install react-native-screens react-native-safe-area-context
-npx expo install @expo/vector-icons
-npm install react-native-swiper
-npx expo start
-```
+npx expo install react-dom react-native-web @expo/metro-runtime <br>
+npx expo install @react-navigation/native @react-navigation/native-stack @react-navigation/bottom-tabs <br>
+npx expo install react-native-screens react-native-safe-area-context <br>
+npx expo install @expo/vector-icons <br>
+npm install react-native-swiper <br>
+npx expo start <br>
