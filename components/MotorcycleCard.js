@@ -1,30 +1,34 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import Button from "./Button";
-
-const motorcycleImages = {
-  "mt07.jpg": require("../assets/images/mt07.jpg"),
-  "ninja650.jpg": require("../assets/images/ninja650.jpg"),
-};
+import motorcycleImages from "../assets/motorcycleImages";
 
 const MotorcycleCard = ({ motorcycle, navigation }) => {
   return (
     <View style={styles.card}>
-      <Image
-        source={motorcycleImages[motorcycle.image]}
-        style={styles.image}
-      />
+      <View style={styles.imageContainer}>
+        <Image
+          source={motorcycleImages[motorcycle.image]}
+          style={styles.image}
+        />
+      </View>
+
+      <Text style={styles.category}>
+        {motorcycle.category.toUpperCase()}
+      </Text>
 
       <Text style={styles.name}>{motorcycle.name}</Text>
-      <Text style={styles.price}>€{motorcycle.price}</Text>
-      <Text style={styles.category}>{motorcycle.category}</Text>
+
+      <Text style={styles.price}>
+        €{motorcycle.price.toLocaleString("en-IE")}
+      </Text>
 
       <Button
         title="View Details"
         onPress={() =>
-            navigation.navigate("MotorcycleDetails", {
-                motorcycle: motorcycle,
-            })
+          navigation.navigate("MotorcycleDetails", {
+            motorcycle: motorcycle,
+          })
         }
       />
     </View>
@@ -33,35 +37,43 @@ const MotorcycleCard = ({ motorcycle, navigation }) => {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#1b1b1b",
     margin: 10,
     padding: 15,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: "#dddddd",
+    borderColor: "#303030",
   },
-
+  imageContainer: {
+    backgroundColor: "#ffffff",
+    borderRadius: 8,
+    overflow: "hidden",
+    marginBottom: 10,
+  },
   image: {
     width: "100%",
     height: 200,
     resizeMode: "contain",
   },
-
+  category: {
+    fontSize: 12,
+    color: "#e63946",
+    fontWeight: "bold",
+    letterSpacing: 1.5,
+    marginTop: 8,
+  },
   name: {
     fontSize: 22,
     fontWeight: "bold",
-    marginTop: 10,
+    color: "#ffffff",
+    marginTop: 6,
   },
-
   price: {
-    fontSize: 18,
+    fontSize: 21,
     fontWeight: "bold",
-    marginTop: 5,
-  },
-
-  category: {
-    fontSize: 16,
-    marginTop: 5,
+    color: "#ffffff",
+    marginTop: 8,
+    marginBottom: 4,
   },
 });
 

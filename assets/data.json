@@ -3,7 +3,7 @@
     "id": 1,
     "name": "Yamaha MT-07",
     "brand": "Yamaha",
-    "price": 9099,
+    "price": 8199,
     "category": "Naked",
     "engine": "689 cc",
     "power": "73.4 PS",
@@ -24,5 +24,57 @@
     "weight": "193 kg",
     "seatHeight": "790 mm",
     "image": "ninja650.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Honda CB750 Hornet",
+    "brand": "Honda",
+    "price": 7999,
+    "category": "Naked",
+    "engine": "755 cc",
+    "power": "92 PS",
+    "torque": "75 Nm",
+    "weight": "192 kg",
+    "seatHeight": "795 mm",
+    "image": "hornet750.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Yamaha YZF-R7",
+    "brand": "Yamaha",
+    "price": 10999,
+    "category": "Sport",
+    "engine": "689 cc",
+    "power": "73.4 PS",
+    "torque": "68 Nm",
+    "weight": "188 kg",
+    "seatHeight": "835 mm",
+    "image": "yamahaR7.jpg"
+  },
+  {
+    "id": 5,
+    "name": "Honda Rebel 500",
+    "brand": "Honda",
+    "price": 7000,
+    "category": "Cruiser",
+    "engine": "471 cc",
+    "power": "46 PS",
+    "torque": "43 Nm",
+    "weight": "191 kg",
+    "seatHeight": "690 mm",
+    "image": "rebel500.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Kawasaki Ninja ZX-10R",
+    "brand": "Kawasaki",
+    "price": 18999,
+    "category": "Superbike",
+    "engine": "998 cc",
+    "power": "203 PS",
+    "torque": "114.9 Nm",
+    "weight": "207 kg",
+    "seatHeight": "835 mm",
+    "image": "ninjaZX10R.jpg"
   }
 ]
